@@ -17,17 +17,14 @@ import ctypes
 
 email_user = 'rilo.songorayyan@gmail.com'
 email_pass = 'rilopambudialiyyin'
-mail = imaplib.IMAP4_SSL("imap.gmail.com",993)
-mail.login(email_user, email_pass)
-mail.select('"Inbox"')
-_,data = mail.search(None, 'ALL')
+ 
 
 
 def import_messages(Body_email, Time):
     status, messages = mail.select("INBOX")
     N = 1
     messages = int(messages[0])
-
+    global subject
 
     
     for i in range(messages, messages-N, -1):
@@ -38,9 +35,6 @@ def import_messages(Body_email, Time):
                 subject, encoding = decode_header(msg["Subject"])[0]
                 if isinstance(subject, bytes):
                     subject = subject.decode(encoding)
-                From, encoding = decode_header(msg.get("From"))[0]
-                if isinstance(From, bytes):
-                    From = From.decode(encoding)
                 if msg.is_multipart():
                     for part in msg.walk():
                         content_type = part.get_content_type()
@@ -72,12 +66,20 @@ def Mbox(title, text, style):
 N0 = 0
 import time
 while (True):
+    mail = imaplib.IMAP4_SSL("imap.gmail.com",993)
+    mail.login(email_user, email_pass)
+    mail.select('"Inbox"')
+    _,data = mail.search(None, 'ALL')    
+
     Body_email = []
     Time = []
+    
     import_messages(Body_email, Time)
-    ID_email = '1'
-    ID_email = int(ID_email)
+    
+    ID_email = int(subject)
+    
     N1 = ID_email
+    
     if N0 != N1:
         email_rilo = [Body_email, Time]
         email_rilo_str = ' '.join(map(str, email_rilo))
@@ -88,4 +90,4 @@ while (True):
     else:
         pass
     N0 = N1
-    time.sleep(1)
+    time.sleep(0)
