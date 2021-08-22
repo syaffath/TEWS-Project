@@ -81,8 +81,8 @@ while (True):
     N1 = ID_email
     
     if N0 != N1:
-        email_rilo = [Body_email, Time]
-        email_rilo_str = ' '.join(map(str, email_rilo))
+        email_rilo = [Body_email[0], Time[0]]
+        email_rilo_str = '\n'.join(map(str, email_rilo))
         if email_rilo_str.__contains__('Tsunami'):
             Mbox('Alert!!', email_rilo_str, 1)
         else: 
